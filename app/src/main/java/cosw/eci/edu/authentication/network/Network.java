@@ -14,7 +14,7 @@ import okhttp3.ResponseBody;
 public interface Network {
     void login(LoginWrapper loginWrapper, RequestCallback<Token> requestCallback );
 
-    public void getAllToDo(RequestCallback<List<ToDo>> requestCallback, String token);
+    public void getTodos(RequestCallback<List<ToDo>> requestCallback, String token);
 
-    public void addToDo(ToDo todo, RequestCallback<ResponseBody> requestCallback , String token);
+    public void createTodo(ToDo todo, RequestCallback<ResponseBody> requestCallback , String token);
 }

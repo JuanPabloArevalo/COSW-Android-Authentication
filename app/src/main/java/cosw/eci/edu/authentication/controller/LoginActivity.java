@@ -101,7 +101,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        token = settings.getString("silentMode", "");
+        token = settings.getString(TOKEN_NAME, "");
+        Log.i("Token es:",token);
+        if(!token.isEmpty()){
+            ConsultToDo();
+        }
 
     }
 
@@ -323,9 +327,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onSuccess(Token response) {
                     if(response!=null){
-                        token = response.getAccessToken();
-                        valid = true;
-                        ConsultToDo();
+                        if(response!=null){
+                            token = response.getAccessToken();
+                            valid = true;
+                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putString(TOKEN_NAME, token);
+                            editor.commit();
+
+                            ConsultToDo();
+                        }
+                        else{
+                            valid = false;
+                        }
 
                     }
                     else{

@@ -23,8 +23,8 @@ public interface  NetworkService {
     Call<Token> login(@Body LoginWrapper user);
 
     @GET( "api/todo" )
-    Call<List<ToDo>> getToDoList();
+    Call<List<ToDo>> getTodos();
 
     @POST( "api/todo" )
-    Call<ResponseBody> addToDo(@Body ToDo toDo);
+    Call<ResponseBody> createTodo(@Body ToDo toDo);
 }

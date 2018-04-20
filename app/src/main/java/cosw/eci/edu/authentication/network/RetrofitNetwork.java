@@ -59,12 +59,12 @@ public class RetrofitNetwork
     }
 
     @Override
-    public void getAllToDo(final RequestCallback<List<ToDo>> requestCallback, String token) {
+    public void getTodos(final RequestCallback<List<ToDo>> requestCallback, String token) {
         addSecureTokenInterceptor(token);
         backgroundExecutor.execute( new Runnable()        {
             @Override
             public void run()            {
-                Call<List<ToDo>> call = networkService.getToDoList();
+                Call<List<ToDo>> call = networkService.getTodos();
                 try                {
                     Response<List<ToDo>> execute = call.execute();
                     requestCallback.onSuccess(execute.body());
@@ -77,12 +77,12 @@ public class RetrofitNetwork
     }
 
     @Override
-    public void addToDo(final ToDo todo, final RequestCallback<ResponseBody> requestCallback, String token) {
+    public void createTodo(final ToDo todo, final RequestCallback<ResponseBody> requestCallback, String token) {
         addSecureTokenInterceptor(token);
         backgroundExecutor.execute( new Runnable()        {
             @Override
             public void run()            {
-                Call<ResponseBody> call = networkService.addToDo(todo);
+                Call<ResponseBody> call = networkService.createTodo(todo);
                 try                {
                     Response<ResponseBody> execute = call.execute();
                     requestCallback.onSuccess( execute.body() );
