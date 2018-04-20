@@ -1,8 +1,9 @@
-package cosw.eci.edu.authentication;
+package cosw.eci.edu.authentication.controller;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cosw.eci.edu.authentication.R;
 import cosw.eci.edu.authentication.model.LoginWrapper;
 import cosw.eci.edu.authentication.model.Token;
 import cosw.eci.edu.authentication.network.NetworkException;
@@ -52,15 +54,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String TOKEN_NAME = "Token";
 
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -326,15 +322,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             rf.login(lw, new RequestCallback<Token>() {
                 @Override
                 public void onSuccess(Token response) {
-                    if(response==null){
-                        valid = false;
-                    }
-                    else{
-                        valid = true;
-                        Log.i("Token",response.getAccessToken());
-                    }
-
-
+                    token = response.getAccessToken();
+                    valid = true;
+                    ConsultToDo();
                 }
                 @Override
                 public void onFailed(NetworkException e) {
@@ -352,12 +342,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
             if (success) {
+                //ConsultToDo();
                 //finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                //ConsultToDo();
+                //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                //mPasswordView.requestFocus();
             }
         }
 
@@ -367,5 +358,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+    public void ConsultToDo() {
+        Intent intent = new Intent(this, ToDoViewActivity.class);
+
+        intent.putExtra(TOKEN_NAME,token);
+        startActivity(intent);
+    }
+
 }
 
