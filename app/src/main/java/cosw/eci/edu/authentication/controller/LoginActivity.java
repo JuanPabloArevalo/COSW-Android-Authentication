@@ -322,9 +322,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             rf.login(lw, new RequestCallback<Token>() {
                 @Override
                 public void onSuccess(Token response) {
-                    token = response.getAccessToken();
-                    valid = true;
-                    ConsultToDo();
+                    if(response!=null){
+                        token = response.getAccessToken();
+                        valid = true;
+                        ConsultToDo();
+
+                    }
+                    else{
+                        valid = false;
+                    }
+
                 }
                 @Override
                 public void onFailed(NetworkException e) {
@@ -332,23 +339,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     e.printStackTrace();
                 }
             });
-
             return valid;
-            // TODO: register the new account here.
 
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(Boolean success) {
             mAuthTask = null;
             showProgress(false);
             if (success) {
-                //ConsultToDo();
-                //finish();
+                ConsultToDo();
             } else {
-                //ConsultToDo();
-                //mPasswordView.setError(getString(R.string.error_incorrect_password));
-                //mPasswordView.requestFocus();
+               mPasswordView.setError(getString(R.string.error_incorrect_password));
+               mPasswordView.requestFocus();
             }
         }
 
